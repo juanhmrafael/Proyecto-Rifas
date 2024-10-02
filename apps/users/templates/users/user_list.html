@@ -1,0 +1,255 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    {% if perms.users.delete_useraccount and users %}
+        <div id="delete-modal"
+             tabindex="-1"
+             class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+            <div class="relative p-4 w-full max-w-md max-h-full">
+                <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                    <button type="button"
+                            class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-hide="delete-modal">
+                        <svg class="w-3 h-3"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Close modal</span>
+                    </button>
+                    <div class="p-4 md:p-5 text-center">
+                        <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                        </svg>
+                        <h3 class="mb-5 text-lg font-normal text-gray-700 dark:text-gray-300">
+                            ¿Estás seguro de que deseas eliminar al usuario de correo <span id="delete-email" class="text-red-500 hover:text-red-700 font-medium"></span>?
+                        </h3>
+                        <button data-modal-hide="delete-modal"
+                                type="button"
+                                id="confirm-delete"
+                                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center">
+                            Sí, estoy segur@
+                        </button>
+                        <button data-modal-hide="delete-modal"
+                                type="button"
+                                class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                            No, cancelar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+    <div class="relative max-w-7xl w-full container mx-auto px-4">
+        <!-- Header de la tabla con el botón "Nuevo" -->
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-900 dark:text-gray-100">Gestión de Usuarios</h2>
+            {% if perms.users.add_useraccount %}
+                <a href="{% url "users:create" %}"
+                   class="bg-pink-600 text-white px-4 py-2 rounded-lg hover:bg-pink-700 focus:ring-4 focus:ring-pink-300 dark:focus:ring-pink-900 transition">
+                    + Nuevo
+                </a>
+            {% endif %}
+        </div>
+        {% if perms.users.view_useraccount %}
+            <!-- Contenedor responsivo de la tabla -->
+            <div class="overflow-x-auto shadow-md rounded-lg">
+                <!-- Tabla -->
+                <table class="min-w-full bg-white dark:bg-gray-800 rounded-lg">
+                    <thead class="bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+                        <tr>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Nombre</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Email</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Estado</th>
+                            <th scope="col"
+                                class="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200 dark:divide-gray-700">
+                        {% for user in users %}
+                            <tr class="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
+                                    {{ user.get_full_name|default:"Nombre no disponible" }}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ user.email }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    {% if user.is_active %}
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 dark:bg-green-700 dark:text-green-200">
+                                            Activo
+                                        </span>
+                                    {% else %}
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800 dark:bg-red-700 dark:text-red-200">
+                                            Inactivo
+                                        </span>
+                                    {% endif %}
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-4">
+                                    <!-- Botones de acción -->
+                                    {% if perms.users.change_useraccount %}
+                                        <a href="{% url 'users:edit' user.id %}"
+                                           title="Editar"
+                                           class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-500 transition">
+                                            <svg class="w-5 h-5 inline-block"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 viewBox="0 0 24 24"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z" />
+                                            </svg>
+                                        </a>
+                                    {% endif %}
+                                    {% if perms.users.view_useraccount %}
+                                        <a href="{% url "users:detail" user.id %}"
+                                           title="Consultar"
+                                           class="text-green-600 dark:text-green-400 hover:text-green-800 dark:hover:text-green-500 transition">
+                                            <svg class="w-5 h-5 inline-block"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 viewBox="0 0 24 24"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 9h6m-6 3h6m-6 3h6M6.996 9h.01m-.01 3h.01m-.01 3h.01M4 5h16a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z" />
+                                            </svg>
+                                        </a>
+                                    {% endif %}
+                                    {% if perms.users.delete_useraccount %}
+                                        <button data-modal-target="delete-modal"
+                                                data-modal-toggle="delete-modal"
+                                                title="Eliminar"
+                                                data-user-id="{{ user.pk }}"
+                                                data-user-email="{{ user.email }}"
+                                                class="text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-500 transition">
+                                            <svg class="w-5 h-5 inline-block"
+                                                 fill="none"
+                                                 stroke="currentColor"
+                                                 stroke-width="2"
+                                                 viewBox="0 0 24 24"
+                                                 xmlns="http://www.w3.org/2000/svg">
+                                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z" />
+                                            </svg>
+                                        </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center py-2">No hay usuarios disponibles.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <!-- Controles de navegación -->
+            <div class="grid grid-cols-7 items-center justify-center gap-4 py-4">
+                <!-- Botón "Primero" -->
+                <div class="col-span-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
+                    {% if page_obj.has_previous %}
+                        <a href="?page=1"
+                           class="px-4 py-2 bg-pink-600 text-center text-white rounded-lg hover:bg-pink-700 transition text-xs xs:text-sm">
+                            Primero
+                        </a>
+                    {% else %}
+                        <span class="px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed text-xs xs:text-sm">Primero</span>
+                    {% endif %}
+                    <!-- Botón "Anterior" -->
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}"
+                           class="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition text-xs xs:text-sm">
+                            Anterior
+                        </a>
+                    {% else %}
+                        <span class="px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed text-xs xs:text-sm">Anterior</span>
+                    {% endif %}
+                </div>
+                <!-- Indicador de página actual -->
+                <div class="col-span-3 flex justify-center">
+                    <span class="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-xs xs:text-sm">
+                        Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}
+                    </span>
+                </div>
+                <div class="col-span-2 flex flex-col sm:flex-row gap-2 justify-center items-center">
+                    <!-- Botón "Siguiente" -->
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}"
+                           class="px-4 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition text-xs xs:text-sm">
+                            Siguiente
+                        </a>
+                    {% else %}
+                        <span class="px-4 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed text-xs xs:text-sm">Siguiente</span>
+                    {% endif %}
+                    <!-- Botón "Último" -->
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.paginator.num_pages }}"
+                           class="px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700 transition text-xs xs:text-sm">
+                            Último
+                        </a>
+                    {% else %}
+                        <span class="px-6 py-2 bg-gray-400 text-white rounded-lg cursor-not-allowed text-xs xs:text-sm">Último</span>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}
+{% block js %}
+    {% if perms.users.delete_useraccount and users %}
+        <script>
+            const url = {
+                users: {
+                    delet: "{% url 'users:delete' 0 %}"
+                }
+            }
+            document.addEventListener("DOMContentLoaded", function() {
+                const deleteModal = document.getElementById("delete-modal");
+                const deleteEmail = document.getElementById("delete-email");
+                let deleteUserId = null;
+                // Abrir modal de eliminación y mostrar nombre del usuario
+                document.querySelectorAll("[data-modal-toggle='delete-modal']").forEach(button => {
+                    button.addEventListener("click", function() {
+                        deleteUserId = this.getAttribute("data-user-id"); // Obtener ID del usuario
+                        const email = this.getAttribute("data-user-email"); // Obtener nombre del usuario
+                        deleteEmail.textContent = email; // Mostrar nombre en el modal
+                    });
+                });
+                // Confirmar la eliminación
+                document.getElementById("confirm-delete").addEventListener("click", function() {
+                    if (deleteUserId) {
+                        console.log("borrar")
+                        const request = url.users.delet.replace('/0/', `/${deleteUserId}/`);
+                        // Realizar petición POST para eliminar usuario
+                        fetch(request, {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRFToken': '{{ csrf_token }}', // Añadir token CSRF
+                                    'Content-Type': 'application/json'
+                                },
+                            })
+                            .then(response => {
+                                if (response.ok) {
+                                    // Si la eliminación fue exitosa, refrescar la página
+                                    window.location.reload();
+                                } else {
+                                    alert("Error al eliminar el usuario.");
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error:', error);
+                                alert("Ocurrió un error.");
+                            });
+                    }
+                    deleteModal.classList.add("hidden"); // Ocultar el modal tras confirmar
+                });
+            });
+        </script>
+    {% endif %}
+{% endblock js %}

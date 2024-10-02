@@ -1,0 +1,179 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% block content %}
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+        <div class="max-w-5xl w-full mx-auto bg-white dark:bg-gray-800 shadow-md rounded-lg p-8">
+            <h2 class="text-2xl font-bold mb-4">Mi cuenta</h2>
+            <form method="post"
+                  class="grid md:grid-cols-2 gap-8"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                <!-- Imagen de perfil -->
+                <div class="grid sm:grid-cols-3 md:grid-cols-2 md:col-span-2 gap-2">
+                    <div class="flex flex-col sm:col-span-1 md:col-span-1 mb-4 md:mb-0 justify-center items-center gap-2">
+                        {{ form.profile_picture.label_tag }}
+                        <div id="preview">
+                            {% if form.instance.profile_picture %}
+                                <img class="rounded size-36"
+                                     src="{{ form.instance.profile_picture.url }}"
+                                     alt="Imagen de perfil">
+                            {% else %}
+                                <svg class="size-36"
+                                     aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     fill="currentColor"
+                                     viewBox="0 0 24 24">
+                                    <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd" />
+                                </svg>
+                            {% endif %}
+                        </div>
+                        <button type="button"
+                                name="{{ form.profile_picture.name }}-clear-button"
+                                class="text-white
+                                       {% if not form.instance.profile_picture %}hidden{% endif %}
+                                       bg-gradient-to-br from-pink-500 to-orange-400 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-pink-200 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                            Limpiar imagen
+                        </button>
+                    </div>
+                    <div class="flex flex-col sm:col-span-2 md:col-span-1 justify-center gap-4">
+                        <input type="file"
+                               id="{{ form.profile_picture.id_for_label }}"
+                               name="{{ form.profile_picture.name }}"
+                               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400">
+                        <div class="flex gap-2 items-center gap-2">
+                            <input type="checkbox"
+                                   name="{{ form.profile_picture.name }}-clear"
+                                   class="hidden">
+                        </div>
+                        {{ form.profile_picture.errors }}
+                    </div>
+                </div>
+                <!-- Email -->
+                <div class="flex flex-col  md:col-span-2 gap-2">
+                    {{ form.email.label_tag }}
+                    {{ form.email }}
+                    {{ form.email.errors }}
+                </div>
+                <!-- Passwords -->
+                <div class="flex flex-col gap-2">
+                    {{ form.password1.label_tag }}
+                    {{ form.password1 }}
+                    {{ form.password1.errors }}
+                </div>
+                <div class="flex flex-col gap-2">
+                    {{ form.password2.label_tag }}
+                    {{ form.password2 }}
+                    {{ form.password2.errors }}
+                </div>
+                <div class="flex flex-col gap-2">
+                    {{ form.first_name.label_tag }}
+                    {{ form.first_name }}
+                    {{ form.first_name.errors }}
+                </div>
+                <div class="flex flex-col gap-2">
+                    {{ form.last_name.label_tag }}
+                    {{ form.last_name }}
+                    {{ form.last_name.errors }}
+                </div>
+                <!-- Estado activo, super usuario, imagen -->
+                <div class="flex items-center gap-4 md:col-span-2">
+                    <div class="flex gap-3 items-center">
+                        {{ form.is_active.label_tag }}
+                        {{ form.is_active }}
+                        {{ form.is_active.errors }}
+                    </div>
+                    <div class="flex gap-4 items-center">
+                        {{ form.is_superuser.label_tag }}
+                        {{ form.is_superuser }}
+                        {{ form.is_superuser.errors }}
+                    </div>
+                </div>
+                <!-- Lista de permisos -->
+                <!-- Permisos Disponibles -->
+                <div class="md:col-span-2">
+                    <h3 class="text-2xl font-semibold mb-4">Permisos del Usuario</h3>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {% regroup form.user_permissions|dictsort:"choice_label" by choice_label.split|first as model_list %}
+                        {% for model in model_list %}
+                            <div class="bg-white dark:bg-gray-800 shadow-md rounded-lg p-4">
+                                <h4 class="text-lg font-medium mb-3">
+                                    {% if model.grouper == "Users" %}
+                                        Usuarios
+                                    {% elif model.grouper == "Raffles" %}
+                                        Rifas
+                                    {% endif %}
+                                </h4>
+                                <ul class="space-y-2">
+                                    {% for permission in model.list %}
+                                        <li>
+                                            <label class="inline-flex items-center">
+                                                {{ permission.tag }}
+                                                <span class="ml-2 text-sm">{{ permission.choice_label|get_last_param }}</span>
+                                            </label>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="flex justify-center md:justify-end items-center md:col-span-2">
+                    <!-- Botón para enviar el formulario -->
+                    <button type="submit"
+                            class="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-600">
+                        Guardar cambios
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+{% block js %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.querySelector('input[name="profile_picture"]');
+            const fileCheckbox = document.querySelector('input[name="profile_picture-clear"]');
+            const fileButton = document.querySelector('button[name="profile_picture-clear-button"]');
+            const previewContainer = document.querySelector('#preview');
+
+            fileInput.addEventListener('change', function() {
+                const file = event.target.files[0];
+
+                // Limpiar el contenido actual del div
+                previewContainer.innerHTML = '';
+
+                if (file) {
+                    const reader = new FileReader();
+
+                    reader.onload = function(e) {
+                        // Crear una nueva imagen
+                        const img = document.createElement('img');
+                        img.src = e.target.result;
+                        img.className = "rounded size-36"; // Añade las clases de estilo a la imagen
+                        previewContainer.appendChild(img); // Añade la nueva imagen al div
+                    };
+
+                    reader.readAsDataURL(file); // Lee el archivo como URL de datos
+                }
+
+                fileButton.classList.remove("hidden");
+                fileCheckbox.checked = false;
+
+            })
+
+            fileButton.addEventListener('click', function() {
+                fileInput.value = ""
+                fileButton.classList.add("hidden");
+                fileCheckbox.checked = true;
+                // Agregar el SVG al contenedor
+                const svgContent = `
+                    <svg class="size-36" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M12 20a7.966 7.966 0 0 1-5.002-1.756l.002.001v-.683c0-1.794 1.492-3.25 3.333-3.25h3.334c1.84 0 3.333 1.456 3.333 3.25v.683A7.966 7.966 0 0 1 12 20ZM2 12C2 6.477 6.477 2 12 2s10 4.477 10 10c0 5.5-4.44 9.963-9.932 10h-.138C6.438 21.962 2 17.5 2 12Zm10-5c-1.84 0-3.333 1.455-3.333 3.25S10.159 13.5 12 13.5c1.84 0 3.333-1.455 3.333-3.25S13.841 7 12 7Z" clip-rule="evenodd" />
+                    </svg>
+                `;
+                previewContainer.innerHTML = svgContent; // Añadir el SVG
+            })
+        });
+    </script>
+{% endblock js %}

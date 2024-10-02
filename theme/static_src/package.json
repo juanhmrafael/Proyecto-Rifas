@@ -1,0 +1,38 @@
+{
+  "name": "theme",
+  "version": "3.8.0",
+  "description": "",
+  "scripts": {
+    "start": "npm run dev",
+    "build": "npm run build:clean && npm run build:tailwind && npm run build:js",
+    "build:clean": "rimraf ../static/css/dist ../static/js/",
+    "build:tailwind": "cross-env NODE_ENV=production tailwindcss --postcss -i ./src/styles.css -o ../static/css/dist/styles.css --minify",
+    "dev": "concurrently \"npm run dev:tailwind\" \"npm run dev:js\"",
+    "dev:tailwind": "cross-env NODE_ENV=development tailwindcss --postcss -i ./src/styles.css -o ../static/css/dist/styles.css -w",
+    "dev:js": "esbuild js/main.js --bundle --outfile=../static/js/bundle.js --watch",
+    "build:js": "esbuild js/main.js --bundle --outfile=../static/js/bundle.js --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.4.2",
+    "@tailwindcss/forms": "^0.5.7",
+    "@tailwindcss/typography": "^0.5.15",
+    "autoprefixer": "^10.4.20",
+    "concurrently": "^9.0.1",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.23.1",
+    "postcss": "^8.4.45",
+    "postcss-import": "^15.1.0",
+    "postcss-nested": "^6.0.1",
+    "postcss-simple-vars": "^7.0.1",
+    "rimraf": "^5.0.5",
+    "tailwindcss": "^3.4.10"
+  },
+  "dependencies": {
+    "flowbite": "^2.5.1",
+    "flowbite-datepicker": "^1.3.0",
+    "simple-datatables": "^9.1.0"
+  }
+}

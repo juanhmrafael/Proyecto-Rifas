@@ -1,0 +1,159 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+        <div class="max-w-5xl mx-auto mb-6">
+            <a href="{% url "raffles:list_participant" raffle.pk %}"
+               class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                Regresar
+            </a>
+        </div>
+        <div class="max-w-5xl w-full mx-auto bg-white dark:bg-gray-800 shadow-md rounded-lg p-8">
+            <h1 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">
+                {% if participant %}
+                    Editar Participante
+                {% else %}
+                    Agregar Participante
+                {% endif %}
+            </h1>
+            <form method="post"
+                  enctype="multipart/form-data"
+                  class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {% csrf_token %}
+                <!-- Información personal -->
+                <div class="md:col-span-2">
+                    <h2 class="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300 text-center">Información Personal</h2>
+                </div>
+                <div>
+                    <label for="full_name" class="block text-gray-700 dark:text-gray-400 mb-2">Nombre Completo</label>
+                    {{ form.full_name }}
+                    <div class="text-red-800 dark:text-red-400">{{ form.full_name.errors }}</div>
+                </div>
+                <div>
+                    <label for="identity_card"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Cédula de Identidad</label>
+                    {{ form.identity_card }}
+                    <div class="text-red-800 dark:text-red-400">{{ form.identity_card.errors }}</div>
+                </div>
+                <div>
+                    <label for="email" class="block text-gray-700 dark:text-gray-400 mb-2">Correo Electrónico</label>
+                    {{ form.email }}
+                    <div class="text-red-800 dark:text-red-400">{{ form.email.errors }}</div>
+                </div>
+                <div>
+                    <label for="phone_number"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Número de Teléfono</label>
+                    {{ form.phone_number }}
+                    <div class="text-red-800 dark:text-red-400">{{ form.phone_number.errors }}</div>
+                </div>
+                <!-- Información de la compra -->
+                <div class="md:col-span-2">
+                    <h2 class="text-xl font-semibold mt-8 mb-4 text-gray-700 dark:text-gray-300 text-center">Información de la Compra</h2>
+                </div>
+                <div class="md:col-span-2 overflow-x-auto mb-6 p-4 border border-gray-200 rounded-lg">
+                    <label for="payment_receipt"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Captura del Pago</label>
+                    {% if form.instance.pk and form.instance.payment_receipt %}
+                        <div class="mb-4">
+                            <img src="{{ form.instance.payment_receipt.url }}"
+                                 alt="Premio"
+                                 class="w-32 h-32 object-cover rounded-lg">
+                        </div>
+                        <div class="mb-4">
+                            <a href="{{ form.instance.payment_receipt.url }}">Actualmente: {{ form.instance.payment_receipt.url }}</a>
+                        </div>
+                    {% endif %}
+                    <div class="mb-4">
+                        <label for="{{ form.payment_receipt.id_for_label }}"
+                               class="block text-gray-700 dark:text-gray-400 mb-2">Imagen del Premio</label>
+                        <input type="file"
+                               name="{{ form.payment_receipt.html_name }}"
+                               id="{{ form.payment_receipt.id_for_label }}"
+                               class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                               accept="image/*">
+                        <div class="text-red-800 dark:text-red-400">{{ form.payment_receipt.errors }}</div>
+                    </div>
+                    {% if form.instance.pk and form.instance.payment_receipt %}
+                        <div class="flex items-center">
+                            <input type="checkbox"
+                                   name="{{ form.payment_receipt.name }}-clear"
+                                   id="{{ form.payment_receipt.name }}-clear_id"
+                                   class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                            <label for="{{ form.payment_receipt.name }}-clear_id"
+                                   class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                Eliminar imagen
+                            </label>
+                        </div>
+                    {% endif %}
+                </div>
+                <div>
+                    <label for="tickets_purchased"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Número de Boletos Comprados</label>
+                    {{ form.tickets_purchased }}
+                    <div class="text-red-800 dark:text-red-400">{{ form.tickets_purchased.errors }}</div>
+                </div>
+                <div>
+                    <label for="payment_reference"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Referencia del Pago</label>
+                    {{ form.payment_reference }}
+                    <div class="text-red-800 dark:text-red-400">{{ form.payment_reference.errors }}</div>
+                </div>
+                <div>
+                    <label for="payment_date"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Fecha del Pago</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                 aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 fill="currentColor"
+                                 viewBox="0 0 20 20">
+                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                            </svg>
+                        </div>
+                        <input id="{{ form.payment_date.id_for_label }}"
+                               datepicker
+                               datepicker-format="dd/mm/yyyy"
+                               datepicker-buttons
+                               datepicker-language="es"
+                               datepicker-autohide
+                               datepicker-autoselect-today
+                               name="{{ form.payment_date.name }}"
+                               type="text"
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500"
+                               placeholder="Seleccione una fecha"
+                               autocomplete="off"
+                               value="{% if form.instance.pk %}{{ form.payment_date.value }}{% else %}{% now "d/m/Y" %}{% endif %}"
+                               required>
+                        <div class="text-red-800 dark:text-red-400">{{ form.payment_date.errors }}</div>
+                    </div>
+                </div>
+                <div>
+                    <label for="is_confirmed"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Estado del pago</label>
+                    {{ form.status }}
+                    <div class="text-red-800 dark:text-red-400">{{ form.status.errors }}</div>
+                </div>
+                <!-- Números Asignados -->
+                {% if participant and participant.assigned_numbers %}
+                    <div class="md:col-span-2">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300">Números Asignados</h2>
+                        <div class="bg-gray-100 dark:bg-gray-700 p-2 rounded-lg max-h-32 overflow-y-auto flex flex-wrap gap-2">
+                            {% for number in assigned_numbers %}
+                                <span class="inline-block bg-pink-100 text-pink-800 dark:bg-pink-800 dark:text-pink-200 font-semibold px-3 py-1 rounded-lg">
+                                    {{ number }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+                <!-- Botón de guardar -->
+                <div class="md:col-span-2 flex justify-end mt-6">
+                    <button type="submit"
+                            class="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-600">
+                        Guardar Participante
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}

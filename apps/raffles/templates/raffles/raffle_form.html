@@ -1,0 +1,313 @@
+{% extends "base.html" %}
+{% load l10n %}
+{% block content %}
+    {% load static %}
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+        <div class="max-w-5xl mx-auto mb-6">
+            <a href="{% url "raffles:list" %}"
+               type="button"
+               class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Regresar</a>
+            {% if form.instance.pk %}
+                <a href="{% url "raffles:list_participant" form.instance.pk %}"
+                   type="button"
+                   class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center ml-2">Participantes</a>
+            {% endif %}
+        </div>
+        <div class="max-w-5xl w-full mx-auto bg-white dark:bg-gray-800 shadow-md rounded-lg p-8">
+            <h2 class="text-2xl font-bold mb-4">
+                {% if form.instance.pk %}
+                    Actualizar
+                {% else %}
+                    Crear
+                {% endif %}
+                Rifa
+            </h2>
+            <form method="post"
+                  class="grid md:grid-cols-2 gap-8"
+                  enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                {{ form.media }}
+                <!-- Título de la rifa -->
+                <div>
+                    <label for="{{ form.title.id_for_label }}"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Título de la Rifa</label>
+                    {{ form.title }}
+                    <div class="text-red-800 dark:text-red-400">
+                        {{ form.title.errors }}
+                    </div>
+                    
+                </div>
+                <!-- Fecha de la rifa -->
+                <div>
+                    <label for="{{ form.raffle_date.id_for_label }}"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Fecha de finalización</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                 aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 fill="currentColor"
+                                 viewBox="0 0 20 20">
+                                <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                            </svg>
+                        </div>
+                        <input id="{{ form.raffle_date.id_for_label }}" datepicker datepicker-format="dd/mm/yyyy" datepicker-buttons datepicker-language="es" datepicker-autohide datepicker-autoselect-today name="{{ form.raffle_date.name }}" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500" placeholder="Seleccione una fecha" autocomplete="off" {% if form.instance.pk %}value={{ form.raffle_date.value|date:'d/m/Y' }}{% endif %}  required>
+                        <div class="text-red-800 dark:text-red-400">
+                            {{ form.raffle_date.errors }}
+                        </div>
+                    </div>
+                </div>
+                <div class="md:col-span-2 grid md:grid-cols-3 gap-6 items-end">
+                    <!-- Costo por boleto -->
+                    <div class="flex-col text-center">
+                        <label for="{{ form.ticket_cost.id_for_label }}"
+                               class="block text-gray-700 dark:text-gray-400 mb-2">Costo por Boleto</label>
+                        <div class="flex">
+                            <div class="relative w-full">
+                                <div class="absolute inset-y-0 start-0 top-0 flex items-center ps-3.5 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                         aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         fill="none"
+                                         viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                                    </svg>
+                                </div>
+                                <input type="number" id="{{ form.ticket_cost.id_for_label }}" name="{{ form.ticket_cost.name }}" min="0" step="0.01" class="block p-2.5 h-11 w-full z-20 ps-10 text-sm text-gray-900 bg-gray-50 rounded-s-lg border-e-gray-50 border-e-2 border border-gray-300 focus:ring-pink-500 focus:border-pink-500 dark:bg-gray-700 dark:border-e-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-pink-500" placeholder="Monto" {% if form.instance.pk %}value={{ form.ticket_cost.value|unlocalize }}{% endif %} required />
+                            </div>
+                            {{ form.currency_type }}
+                            <div class="text-red-800 dark:text-red-400">
+                                {{ form.currency_type.errors }}
+                            </div>
+                        </div>
+                        {{ form.ticket_cost.errors }}
+                    </div>
+                    <!-- Cantidad de boletos disponibles -->
+                    <div class="flex-col text-center">
+                        <label for="{{ form.available_tickets.id_for_label }}"
+                               class="block text-gray-700 dark:text-gray-400 mb-2">Boletos Disponibles</label>
+                        <div class="relative flex items-center max-w">
+                            <button type="button"
+                                    id="decrement-button"
+                                    data-input-counter-decrement="{{ form.available_tickets.id_for_label }}"
+                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                <svg class="w-3 h-3 text-gray-900 dark:text-white"
+                                     aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     fill="none"
+                                     viewBox="0 0 18 2">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                                </svg>
+                            </button>
+                            <input type="text" id="{{ form.available_tickets.id_for_label }}" name="{{ form.available_tickets.name }}" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-pink-500 focus:border-pink-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500" placeholder="Cantidad" {% if form.instance.pk %}value={{ form.available_tickets.value|unlocalize }}{% endif %} required />
+                            <button type="button"
+                                    id="increment-button"
+                                    data-input-counter-increment="{{ form.available_tickets.id_for_label }}"
+                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                <svg class="w-3 h-3 text-gray-900 dark:text-white"
+                                     aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     fill="none"
+                                     viewBox="0 0 18 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="text-red-800 dark:text-red-400">
+                            {{ form.available_tickets.errors }}
+                        </div>
+                    </div>
+                    <!-- Mínimo de boletos para participar -->
+                    <div class="flex-col text-center">
+                        <label for="{{ form.min_tickets.id_for_label }}"
+                               class="block text-gray-700 dark:text-gray-400 mb-2">
+                            Mínimo de Boletos para Participar
+                        </label>
+                        <div class="relative flex items-center max-w">
+                            <button type="button"
+                                    id="decrement-button"
+                                    data-input-counter-decrement="{{ form.min_tickets.id_for_label }}"
+                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                <svg class="w-3 h-3 text-gray-900 dark:text-white"
+                                     aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     fill="none"
+                                     viewBox="0 0 18 2">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                                </svg>
+                            </button>
+                            <input type="text" id="{{ form.min_tickets.id_for_label }}" name="{{ form.min_tickets.name }}" data-input-counter aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-pink-500 focus:border-pink-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500" placeholder="Cantidad" {% if form.instance.pk %}value={{ form.min_tickets.value|unlocalize }}{% endif %} required />
+                            <button type="button"
+                                    id="increment-button"
+                                    data-input-counter-increment="{{ form.min_tickets.id_for_label }}"
+                                    class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                                <svg class="w-3 h-3 text-gray-900 dark:text-white"
+                                     aria-hidden="true"
+                                     xmlns="http://www.w3.org/2000/svg"
+                                     fill="none"
+                                     viewBox="0 0 18 18">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="text-red-800 dark:text-red-400">    
+                            {{ form.min_tickets.errors }}
+                        </div>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center">
+                    <label for="{{ form.status.id_for_label }}"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">
+                        Estado de la Rifa
+                    </label>
+                    {{ form.status }}
+                    <div class="text-red-800 dark:text-red-400">
+                        {{ form.status.errors }}
+                    </div>    
+                </div>
+                <!-- Premios -->
+                <div class="flex flex-col justify-center md:col-span-2">
+                    <label for="{{ form.prizes.id_for_label }}"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Premios</label>
+                    {{ form.prizes }}
+                    <div class="text-red-800 dark:text-red-400">
+                        {{ form.prizes.errors }}
+                    </div>    
+                </div>
+                <div class="flex flex-col justify-center md:col-span-2">
+                    <label for="{{ form.payment_info.id_for_label }}"
+                           class="block text-gray-700 dark:text-gray-400 mb-2">Datos de Pago</label>
+                    {{ form.payment_info }}
+                    <div class="text-red-800 dark:text-red-400">    
+                        {{ form.payment_info.errors }}
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center md:col-span-2">
+                    <!-- Imágenes Dinámicas -->
+                    <h3 class="text-lg font-semibold mb-4">Imágenes de Premios</h3>
+                    <div id="image-formset">
+                        {{ image_formset.management_form }}
+                        {% for form in image_formset %}
+                            <div class="image-form mb-6 p-4 border border-gray-200 rounded-lg">
+                                {% if form.instance.pk and form.instance.image %}
+                                    <div class="mb-4">
+                                        <img src="{{ form.instance.image.url }}"
+                                             alt="Premio"
+                                             class="w-32 h-32 object-cover rounded-lg">
+                                    </div>
+                                {% endif %}
+                                <div class="mb-4">
+                                    <label for="{{ form.image.id_for_label }}"
+                                           class="block text-gray-700 dark:text-gray-400 mb-2">
+                                        Imagen del Premio
+                                    </label>
+                                    <input type="file"
+                                           name="{{ form.image.html_name }}"
+                                           id="{{ form.image.auto_id }}"
+                                           class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+                                           accept="image/*">
+                                    <div class="text-red-800 dark:text-red-400">    
+                                        {{ form.image.errors }}
+                                    </div>
+                                </div>
+                                {% if form.instance.pk %}
+                                    <div class="flex items-center">
+                                        <input type="checkbox"
+                                               name="{{ form.DELETE.html_name }}"
+                                               id="{{ form.DELETE.auto_id }}"
+                                               class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                                        <label for="{{ form.DELETE.id_for_label }}"
+                                               class="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                            Eliminar imagen
+                                        </label>
+                                    </div>
+                                {% endif %}
+                                {{ form.id }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="ml-auto">
+                        <button type="button"
+                                id="add-image"
+                                class="text-gray-900 bg-gradient-to-r from-teal-200 to-lime-200 hover:bg-gradient-to-l hover:from-teal-200 hover:to-lime-200 focus:ring-4 focus:outline-none focus:ring-lime-200 dark:focus:ring-teal-700 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                            Agregar Otra Imagen
+                        </button>
+                    </div>
+                </div>
+                    {% if show_winner_field %}
+                        <div class="p-4 border border-gray-200 rounded-lg md:col-span-2">
+                            <!-- Sección de ganadores actuales -->
+                            <div class="mb-6">
+                                <h4 class="text-sm font-medium text-gray-600 dark:text-gray-300 mb-2">Ganadores Actuales:</h4>
+                                {% if form.winner.value %}
+                                    <div class="p-4 bg-gray-50 dark:bg-gray-700 rounded-md">
+                                        {{ form.winner.value|safe }}
+                                    </div>
+                                {% else %}
+                                    <p class="text-gray-500 dark:text-gray-400 italic">No hay ganadores seleccionados actualmente.</p>
+                                {% endif %}
+                            </div>
+                            <div class="w-full max-w-xl">
+                                {% if form.winner.value %}
+                                    <p class="text-yellow-200">Deja este campo vacío para mantener los ganadores actuales.</p>
+                                {% endif %}
+                                {{ form.num_winners.label_tag }}
+                                {{ form.num_winners }}
+                                {{ form.num_winners.help_text }}
+                            </div>
+                            <div class="text-red-800 dark:text-red-400"> 
+                                {{ form.num_winners.errors }}
+                            </div>
+                        </div>
+                    {% endif %}
+                <div class="flex justify-center md:justify-end items-center md:col-span-2">
+                    <button type="submit"
+                            class="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-600">
+                        {% if form.instance.pk %}
+                            Actualizar
+                        {% else %}
+                            Crear
+                        {% endif %}
+                        Rifa
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+{% block js %}
+    <script src="{% static 'js/tinymce/tinymce_config.js' %}"></script>
+    <script>
+        document.getElementById('add-image').addEventListener('click', function() {
+            const formsetDiv = document.getElementById('image-formset');
+            const formCount = document.getElementById('id_prize_images-TOTAL_FORMS');
+            const currentFormCount = parseInt(formCount.value);
+
+            // Copiar el primer formulario
+            const newForm = formsetDiv.querySelector('.image-form').cloneNode(true);
+
+            // Actualizar los índices
+            newForm.innerHTML = newForm.innerHTML.replace(/-(\d+)-/g, `-${currentFormCount}-`);
+            newForm.querySelectorAll('[for]').forEach(label => {
+                label.setAttribute('for', label.getAttribute('for').replace(/-\d+-/, `-${currentFormCount}-`));
+            });
+
+            // Limpiar los valores de los campos
+            newForm.querySelector('input[type="file"]').value = '';
+            newForm.querySelector('input[type="hidden"]').value = '';
+
+            // Remover la imagen previa y el checkbox de eliminación si existen
+            const imgPreview = newForm.querySelector('img');
+            if (imgPreview) imgPreview.parentElement.remove();
+            const deleteCheckbox = newForm.querySelector('input[type="checkbox"]');
+            if (deleteCheckbox) deleteCheckbox.parentElement.remove();
+
+            // Añadir el nuevo formulario
+            formsetDiv.appendChild(newForm);
+
+            // Incrementar el contador de formularios
+            formCount.value = currentFormCount + 1;
+        });
+    </script>
+{% endblock js %}

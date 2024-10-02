@@ -1,0 +1,528 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+    <div id="controls-carousel"
+         class="relative max-w-5xl w-full container mx-auto px-4"
+         data-carousel="slide">
+        <!-- Carousel wrapper -->
+        <div class="relative h-64 overflow-hidden rounded-lg md:h-[34rem]">
+            {% if raffle.prize_images.all %}
+                {% for prize in raffle.prize_images.all %}
+                    <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                        <img src="{{ prize.image.url }}"
+                             class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                             alt="Premio 1">
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                    <img src="{% get_media_prefix %}img/Logo.png"
+                         class="absolute block w-full h-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                         alt="Premio 1">
+                </div>
+            {% endif %}
+            {% if raffle.prize_images.all|length > 1 %}
+                <!-- Slider controls -->
+                <button type="button"
+                        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                        data-carousel-prev>
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4" />
+                        </svg>
+                        <span class="sr-only">Previous</span>
+                    </span>
+                </button>
+                <button type="button"
+                        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+                        data-carousel-next>
+                    <span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+                        <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 6 10">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4" />
+                        </svg>
+                        <span class="sr-only">Next</span>
+                    </span>
+                </button>
+            {% endif %}
+        </div>
+    </div>
+    <div class="mx-auto px-4 py-12">
+        <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+            {% if not summary %}
+                <!-- Stepper de Progreso -->
+                <div class="flex justify-between mb-8">
+                    <div class="flex items-center">
+                        <div id="step1Indicator"
+                             class="w-8 h-8 flex items-center justify-center rounded-full bg-pink-500 text-white">
+                            1
+                        </div>
+                        <span class="ml-2 text-sm font-semibold text-pink-500">Datos de Contacto</span>
+                    </div>
+                    <div class="flex items-center">
+                        <div id="step2Indicator"
+                             class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 dark:bg-gray-600 text-white">
+                            2
+                        </div>
+                        <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">Datos de Pago</span>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- Primer Contenedor: Información de la Rifa -->
+            <div class="bg-pink-500 dark:bg-pink-600 text-white p-6 rounded-lg mb-6">
+                <div class="flex items-center mb-4">
+                    <svg class="w-6 h-6 text-white"
+                         fill="none"
+                         stroke="currentColor"
+                         viewBox="0 0 24 24"
+                         xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                        </path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span class="ml-2 text-xl font-bold">Premios de la Rifa</span>
+                </div>
+                <h2 class="text-2xl font-bold mb-4">{{ raffle.title }}</h2>
+                <p class="sm:flex mb-2 gap-2">
+                    <span class="flex gap-2">
+                        <svg class="w-6 h-6"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="currentColor"
+                             viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" clip-rule="evenodd" />
+                        </svg>
+                    Fecha de Sorteo:</span>
+                    <span class="font-semibold">{{ raffle.raffle_date }}</span>
+                </p>
+                <div class="mb-4 mt-4">
+                    <ul class="text-left space-y-2">
+                        <p class="font-semibold flex items-center justify-center">
+                            <svg class="w-6 h-6"
+                                 aria-hidden="true"
+                                 xmlns="http://www.w3.org/2000/svg"
+                                 width="24"
+                                 height="24"
+                                 fill="currentColor"
+                                 viewBox="0 0 24 24">
+                                <path d="M11 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" />
+                                <path fill-rule="evenodd" d="M9.896 3.051a2.681 2.681 0 0 1 4.208 0c.147.186.38.282.615.255a2.681 2.681 0 0 1 2.976 2.975.681.681 0 0 0 .254.615 2.681 2.681 0 0 1 0 4.208.682.682 0 0 0-.254.615 2.681 2.681 0 0 1-2.976 2.976.681.681 0 0 0-.615.254 2.682 2.682 0 0 1-4.208 0 .681.681 0 0 0-.614-.255 2.681 2.681 0 0 1-2.976-2.975.681.681 0 0 0-.255-.615 2.681 2.681 0 0 1 0-4.208.681.681 0 0 0 .255-.615 2.681 2.681 0 0 1 2.976-2.975.681.681 0 0 0 .614-.255ZM12 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" clip-rule="evenodd" />
+                                <path d="M5.395 15.055 4.07 19a1 1 0 0 0 1.264 1.267l1.95-.65 1.144 1.707A1 1 0 0 0 10.2 21.1l1.12-3.18a4.641 4.641 0 0 1-2.515-1.208 4.667 4.667 0 0 1-3.411-1.656Zm7.269 2.867 1.12 3.177a1 1 0 0 0 1.773.224l1.144-1.707 1.95.65A1 1 0 0 0 19.915 19l-1.32-3.93a4.667 4.667 0 0 1-3.4 1.642 4.643 4.643 0 0 1-2.53 1.21Z" />
+                            </svg>
+                            Premios:
+                        </p>
+                        {{ raffle.prizes | safe }}
+                    </ul>
+                </div>
+                <p class="mb-4">
+                    <strong>Costo boleto:</strong> {{ raffle.ticket_cost }} {{ raffle.currency_type }}
+                </p>
+                <p class="mb-4 font-semibold flex items-center gap-2">
+                    <svg class="size-10 sm:size-6"
+                         aria-hidden="true"
+                         xmlns="http://www.w3.org/2000/svg"
+                         width="24"
+                         height="24"
+                         fill="currentColor"
+                         viewBox="0 0 24 24">
+                        <path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.408-5.5a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM10 10a1 1 0 1 0 0 2h1v3h-1a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-1v-4a1 1 0 0 0-1-1h-2Z" clip-rule="evenodd" />
+                    </svg>
+                    ¡Participa a partir de {{ raffle.min_tickets }} boletos en adelante!
+                </p>
+                <p>Cada boleto aumenta tus posibilidades de ganar grandes premios. ¡Participa ahora!</p>
+            </div>
+            {% if not summary %}
+                <form id="formData" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <!-- Formulario 1: Datos de Contacto -->
+                    <div id="form1" class="space-y-6">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Datos de Contacto</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label for="{{ form.full_name.id_for_label }}"
+                                       class="block text-gray-700 dark:text-gray-400 mb-2">Nombre Completo</label>
+                                <input type="text"
+                                       value="{{ form.full_name.value|default:'' }}"
+                                       id="{{ form.full_name.id_for_label }}"
+                                       name="{{ form.full_name.name }}"
+                                       required
+                                       class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500" autocomplete="off">
+                                <div class="text-red-800 dark:text-red-400">
+                                    {{ form.full_name.errors }}
+                                </div>
+                            </div>
+                            <div>
+                                <label for="{{ form.identity_card.id_for_label }}"
+                                       class="block text-gray-700 dark:text-gray-400 mb-2">
+                                    Cédula de
+                                    Identidad
+                                </label>
+                                <input type="text"
+                                       value="{{ form.identity_card.value|default:'' }}"
+                                       id="{{ form.identity_card.id_for_label }}"
+                                       name="{{ form.identity_card.name }}"
+                                       required
+                                       class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500" autocomplete="off">
+                                <div class="text-red-800 dark:text-red-400">
+                                    {{ form.identity_card.errors }}
+                                </div>
+                            </div>
+                            <div>
+                                <label for="{{ form.email.id_for_label }}"
+                                       class="block text-gray-700 dark:text-gray-400 mb-2">
+                                    Correo
+                                    Electrónico
+                                </label>
+                                <input type="email"
+                                       value="{{ form.email.value|default:'' }}"
+                                       id="{{ form.email.id_for_label }}"
+                                       name="{{ form.email.name }}"
+                                       required
+                                       class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500"
+                                       autocomplete="off">
+                                <div class="text-red-800 dark:text-red-400">
+                                    {{ form.email.errors }}
+                                </div>
+                            </div>
+                            <div>
+                                <label for="{{ form.phone_number.id_for_label }}"
+                                       class="block text-gray-700 dark:text-gray-400 mb-2">
+                                    Número de
+                                    Teléfono
+                                </label>
+                                <input type="tel"
+                                       value="{{ form.phone_number.value|default:'' }}"
+                                       id="{{ form.phone_number.id_for_label }}"
+                                       name="{{ form.phone_number.name }}"
+                                       required
+                                       class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500" autocomplete="off">
+                                <div class="text-red-800 dark:text-red-400">
+                                    {{ form.phone_number.errors }}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Botón Siguiente -->
+                        <div class="mt-6 flex justify-center sm:justify-end">
+                            <button type="button"
+                                    class="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-600"
+                                    onclick="goToStep2()">Siguiente: Datos de Pago</button>
+                        </div>
+                    </div>
+                    <!-- Formulario 2: Datos de Pago -->
+                    <div id="form2" class="space-y-6 hidden">
+                        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Datos de Pago</h2>
+                        <!-- Datos de Pago Móvil -->
+                        <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">{{ raffle.payment_info|safe }}</div>
+                        <!-- Número de Boletos -->
+                        <div>
+                            <label for="{{ form.tickets_purchased.id_for_label }}"
+                                   class="block text-gray-700 dark:text-gray-400 mb-2">
+                                Número de
+                                Boletos
+                            </label>
+                            <div class="relative flex items-center">
+                                <button type="button"
+                                        class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                        onclick="decreaseTickets()">
+                                    <svg class="w-3 h-3 text-gray-900 dark:text-white"
+                                         aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         fill="none"
+                                         viewBox="0 0 18 2">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16" />
+                                    </svg>
+                                </button>
+                                <input disabled autocomplete="off"
+                                       type="number"
+                                       value="{{ form.tickets_purchased.value|default:raffle.min_tickets }}"
+                                       id="{{ form.tickets_purchased.id_for_label }}"
+                                       name="{{ form.tickets_purchased.name }}"
+                                       min="{{ raffle.min_tickets }}"
+                                       readonly
+                                       class="bg-gray-50 border-x-0 border-gray-300 h-12 font-medium text-center text-gray-900 text-sm focus:ring-pink-500 focus:border-pink-500 block w-full pb-6 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500">
+                                <div class="absolute w-full justify-center bottom-1 start-1/2 -translate-x-1/2 rtl:translate-x-1/2 flex items-center text-md text-gray-400 space-x-1 rtl:space-x-reverse">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                         aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         fill="none"
+                                         viewBox="0 0 20 16">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 2a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1M2 5h12a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm8 5a2 2 0 1 1-4 0 2 2 0 0 1 4 0Z" />
+                                    </svg>
+                                        <span id="montoTotal" title="Monto a cancelar">{{ price }} {{ raffle.currency_type }}</span>
+                                </div>
+                                <button type="button"
+                                        class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none"
+                                        onclick="increaseTickets()">
+                                    <svg class="w-3 h-3 text-gray-900 dark:text-white"
+                                         aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         fill="none"
+                                         viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16" />
+                                    </svg >
+                                </button>
+                            </div>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">Transfiera el monto exacto con sus céntimos</p>
+                            <div class="text-red-800 dark:text-red-400">
+                                {{ form.tickets_purchased.errors }}
+                            </div>
+                        </div>
+                        <!-- Referencia de Pago -->
+                        <div>
+                            <label for="{{ form.payment_reference.id_for_label }}"
+                                   class="block text-gray-700 dark:text-gray-400 mb-2">
+                                Referencia de
+                                Pago (Últimos 9 dígitos)
+                            </label>
+                            <input disabled autocomplete="off" placeholder="123456789"
+                                   type="text"
+                                   value="{{ form.payment_reference.value|default:'' }}"
+                                   id="{{ form.payment_reference.id_for_label }}"
+                                   name="{{ form.payment_reference.name }}"
+                                   required
+                                   class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500">
+                            <div class="text-red-800 dark:text-red-400">
+                                {{ form.payment_reference.errors }}
+                            </div>
+                        </div>
+                        <!-- Fecha de Pago -->
+                        <div>
+                            <label for="{{ form.payment_date.id_for_label }}"
+                                   class="block text-gray-700 dark:text-gray-400 mb-2">Fecha del Pago</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                                         aria-hidden="true"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         fill="currentColor"
+                                         viewBox="0 0 20 20">
+                                        <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                                    </svg>
+                                </div>
+                                <input disabled value="{% if form.payment_date.value %}{{form.payment_date.value}}{% else %}{% now "d/m/Y" %}{% endif %}" name="{{ form.payment_date.name }}" id="{{ form.payment_date.id_for_label }}" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy" datepicker-min-date="{{ raffle.date_creation|date:'d/m/Y' }}" datepicker-max-date="{% now "d/m/Y" %}" datepicker-buttons datepicker-language="es" datepicker-autoselect-today type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500" placeholder="Seleccione una fecha" required>
+                                <div class="text-red-800 dark:text-red-400">
+                                    {{ form.payment_date.errors }}
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Captura de Pago -->
+                        <div>
+                            <label for="{{ form.payment_receipt.id_for_label }}"
+                                   class="block text-gray-700 dark:text-gray-400 mb-2">
+                                Sube tu Captura de
+                                Pago
+                            </label>
+                            <input disabled
+                                   type="file"
+                                   id="{{ form.payment_receipt.id_for_label }}"
+                                   name="{{ form.payment_receipt.name }}"
+                                   accept="image/*"
+                                   required
+                                   class="block w-full text-sm text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 focus:outline-none">
+                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                                Formato aceptado: JPG, PNG. Tamaño máximo:
+                                5MB
+                            </p>
+                            <div class="text-red-800 dark:text-red-400">
+                                {{ form.payment_receipt.errors }}
+                            </div>
+                        </div>
+                        <!-- Checkbox Términos -->
+                        <div class="mt-4">
+                            <input disabled
+                                   type="checkbox"
+                                   id="terms"
+                                   class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-pink-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 mr-2"
+                                   required>
+                            <label for="terms" class="text-gray-700 dark:text-gray-400">
+                                He leído y acepto los
+                                <button type="button" class="text-pink-500"
+                                        data-modal-target="termsModal"
+                                        data-modal-toggle="termsModal">Términos y Condiciones</button>
+                                .
+                            </label>
+                            <p class="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                                Al participar, aceptas que has leído y estás de acuerdo con los Términos y Condiciones del sorteo. Estos incluyen información importante sobre elegibilidad, derechos, y responsabilidades de los participantes.
+                            </p>
+                        </div>
+                        <!-- Botón para Participar -->
+                        <div class="mt-6 flex justify-between">
+                            <button type="button"
+                                    class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:focus:ring-gray-600"
+                                    onclick="goToStep1()">Anterior</button>
+                            <button type="submit"
+                                    class="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-600">
+                                Participar
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            {% else %}
+                <!-- Mostrar el resumen de la rifa si ya ha finalizado -->
+                <section class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md">
+                    <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">🎉 Resumen de la Rifa</h2>
+                    
+                    <p class="text-lg text-gray-700 dark:text-gray-300 mb-4">
+                        ¡Gracias por participar en nuestra rifa! La rifa ha finalizado y aquí están los detalles:
+                    </p>
+
+                    <!-- Mostrar ganadores -->
+                    <div class="mt-4">
+                        <h3 class="font-semibold text-lg text-gray-900 dark:text-white">🏆 Ganadores:</h3>
+                        <p class="text-gray-700 dark:text-gray-300">{{ winners|safe }}</p>
+                    </div>
+
+                    <!-- Términos y Condiciones -->
+                    <div class="mt-6 border-t border-gray-300 dark:border-gray-700 pt-4">
+                        <h3 class="font-bold text-gray-900 dark:text-white mb-2">📜 Términos y Condiciones del Sorteo</h3>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            Al participar en esta rifa, aceptas automáticamente los <strong>Términos y Condiciones</strong>. Esto incluye toda la información importante sobre la elegibilidad, derechos de los participantes, responsabilidades, premios, y más.
+                        </p>
+                        <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">
+                            Te recomendamos leer cuidadosamente los términos para entender todas las reglas y condiciones que aplicaron a esta rifa.
+                        </p>
+                        <button type="button" class="text-pink-500 font-medium hover:underline focus:outline-none"
+                                data-modal-target="termsModal"
+                                data-modal-toggle="termsModal">
+                            Leer los Términos y Condiciones completos
+                        </button>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    </div>
+    <!-- Modal de Términos y Condiciones -->
+    <div id="termsModal"
+         tabindex="-1"
+         aria-hidden="true"
+         class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-2xl max-h-full">
+            <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+                <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                    <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Términos y Condiciones</h3>
+                    <button type="button"
+                            class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                            data-modal-hide="termsModal">
+                        <svg class="w-3 h-3"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 14 14">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                        </svg>
+                        <span class="sr-only">Cerrar</span>
+                    </button>
+                </div>
+                <div class="p-6 space-y-6">
+                    <p class="text-gray-500 dark:text-gray-400">
+                        1. Los números disponibles para comprar en cada una de nuestras rifas serán descritos en la página
+                        de detalles de las mismas.
+                    </p>
+                    <p class="text-gray-500 dark:text-gray-400">
+                        2. Solo pueden participar personas naturales mayores de 18 años con nacionalidad venezolana o
+                        extranjeros residentes en Venezuela.
+                    </p>
+                    <p class="text-gray-500 dark:text-gray-400">
+                        3. Los premios deben ser retirados personalmente en el lugar indicado en cada rifa. Se entregará
+                        personalmente solo en la dirección indicada por el ganador del primer premio o premio mayor.
+                    </p>
+                    <p class="text-gray-500 dark:text-gray-400">
+                        4. Los ganadores aceptan que se difundan en todas nuestras redes sociales fotografías y videos con
+                        su presencia luego de haber sido entregados los premios.
+                    </p>
+                </div>
+                <div class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600 justify-end">
+                    <button data-modal-hide="termsModal"
+                            type="button"
+                            class="text-white bg-pink-500 hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                        Aceptar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+{% block js %}
+    {% if not summary %}
+        <script>
+            // Función para cambiar al segundo formulario
+            function goToStep2() {
+                    // Obtener el formulario 1 (Datos de Contacto)
+                    const form = document.querySelector('#formData');
+
+                    // Validar todos los campos dentro del form1 (Datos de Contacto)
+                    if (form.checkValidity()) {
+                        document.getElementById('form1').classList.add('hidden');
+                        document.getElementById('form2').classList.remove('hidden');
+                        document.getElementById('step1Indicator').classList.remove('bg-pink-500');
+                        document.getElementById('step1Indicator').classList.add('bg-gray-300', 'dark:bg-gray-600');
+                        document.getElementById('step2Indicator').classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                        document.getElementById('step2Indicator').classList.add('bg-pink-500');
+                        document.getElementById('step1Indicator').nextElementSibling.classList.remove('font-semibold', 'text-pink-500');
+                        document.getElementById('step1Indicator').nextElementSibling.classList.add('text-gray-500', 'dark:text-gray-400');
+                        document.getElementById('step2Indicator').nextElementSibling.classList.remove('text-gray-500', 'dark:text-gray-400');
+                        document.getElementById('step2Indicator').nextElementSibling.classList.add('font-semibold', 'text-pink-500');
+                        // Habilitar los campos del formulario de pago
+                        const paymentFields = document.querySelectorAll('#form2 input');
+                        paymentFields.forEach(field => {
+                            field.removeAttribute('disabled');
+                        });
+
+                    } else {
+                        // Si hay errores, mostrar los mensajes de error automáticos del navegador
+                        form.reportValidity();
+                    }
+            }
+
+            // Función para regresar al primer formulario
+            function goToStep1() {
+                document.getElementById('form1').classList.remove('hidden');
+                document.getElementById('form2').classList.add('hidden');
+                document.getElementById('step1Indicator').classList.add('bg-pink-500');
+                document.getElementById('step1Indicator').classList.remove('bg-gray-300', 'dark:bg-gray-600');
+                document.getElementById('step2Indicator').classList.add('bg-gray-300', 'dark:bg-gray-600');
+                document.getElementById('step2Indicator').classList.remove('bg-pink-500');
+                document.getElementById('step2Indicator').nextElementSibling.classList.remove('font-semibold', 'text-pink-500');
+                document.getElementById('step2Indicator').nextElementSibling.classList.add('text-gray-500', 'dark:text-gray-400');
+                document.getElementById('step1Indicator').nextElementSibling.classList.remove('text-gray-500', 'dark:text-gray-400');
+                document.getElementById('step1Indicator').nextElementSibling.classList.add('font-semibold', 'text-pink-500');
+                // Deshabilitar los campos del formulario de pago
+                const paymentFields = document.querySelectorAll('#form2 input');
+                paymentFields.forEach(field => {
+                    field.setAttribute('disabled', true);
+                });
+            }
+
+            // Variables y funciones para controlar los boletos
+            let ticketQuantity = {{raffle.min_tickets|safe}};
+            const ticketPrice = {{raffle.ticket_cost|safe}}; // Precio por boleto en Bs
+
+            function updateTotal() {
+                const total = ticketQuantity * ticketPrice;
+                document.getElementById('montoTotal').textContent = `${ total.toLocaleString("es-Ve", {minimumFractionDigits: 2, maximumFractionDigits: 2}) } {{raffle.currency_type}}`;
+            }
+
+            function increaseTickets() {
+                ticketQuantity++;
+                document.getElementById('{{form.tickets_purchased.id_for_label}}').value = ticketQuantity;
+                updateTotal();
+            }
+
+            function decreaseTickets() {
+                if (ticketQuantity > {{raffle.min_tickets|safe}}) {
+                    ticketQuantity--;
+                    document.getElementById('{{form.tickets_purchased.id_for_label}}').value = ticketQuantity;
+                    updateTotal();
+                }
+            }
+
+            updateTotal();
+        </script>
+    {% endif %}
+{% endblock js %}

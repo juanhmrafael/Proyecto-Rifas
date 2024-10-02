@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+{% load custom_filters %}
+{% load static %}
+{% block content %}
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 p-6 flex items-start justify-center">
+        <div class="w-full max-w-4xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+            <!-- Título -->
+            <div class="text-center mb-8">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-200">Verificar Estado de Pago</h1>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mt-2">
+                    Ingrese el número de referencia de su pago para
+                    verificar si ha sido confirmado.
+                </p>
+            </div>
+            <!-- Formulario de búsqueda -->
+            <form method="get" class="flex flex-col items-center gap-5">
+                <div class="relative w-full max-w-md">
+                    <label for="payment-reference" class="sr-only">Buscar referencia de pago</label>
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                             aria-hidden="true"
+                             xmlns="http://www.w3.org/2000/svg"
+                             fill="none"
+                             viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </div>
+                    <input type="search"
+                           name="search"
+                           id="payment-reference"
+                           class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500"
+                           placeholder="Referencia de pago..."
+                           required>
+                    <button type="submit"
+                            class="inline-flex p-0.5 overflow-hidden text-sm font-medium absolute end-2.5 bottom-1.5 text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                        <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-gray-50 dark:bg-gray-700 rounded-md group-hover:bg-opacity-0">
+                            Buscar
+                        </span>
+                    </button>
+                </div>
+            </form>
+            <!-- Instrucciones adicionales -->
+            <div class="mt-8 text-center">
+                <p class="text-gray-600 dark:text-gray-400">
+                    Por favor, asegúrese de ingresar la referencia de pago exactamente como aparece en su comprobante.
+                </p>
+                <p class="text-gray-500 dark:text-gray-400 mt-2">
+                    Si tiene alguna duda o problema, puede ponerse en contacto con nuestro equipo de soporte.
+                </p>
+            </div>
+            <div class="mt-7">
+                <!-- Resultados de la búsqueda -->
+                {% if search_result.status %}
+                    <div class="w-full max-w-5xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+                        <!-- Enlace a la Rifa -->
+                        <div class="mb-6">
+                            <a href="{% url 'home:raffle' search_result.raffle.id %}" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-500 to-pink-500 group-hover:from-purple-500 group-hover:to-pink-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800">
+                                <span class="flex relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-800 rounded-md group-hover:bg-opacity-0">
+                                    <svg class="w-6 h-6 mr-2 text-white"
+                                         xmlns="http://www.w3.org/2000/svg"
+                                         fill="none"
+                                         viewBox="0 0 24 24"
+                                         stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12l4-4m-4 4 4 4" />
+                                    </svg>
+                                    Ir a la Rifa
+                                </span>
+                            </a>
+                        </div>
+                        <!-- Mensaje principal -->
+                        <div class="text-center mb-6">
+                            <img src="{% get_media_prefix %}img/logo.png"
+                                 alt="Logo de la Empresa"
+                                 class="mx-auto mb-4 h-36">
+                            <h1 class="text-4xl font-bold mb-4 text-gray-900 dark:text-gray-200">¡Gracias por participar en nuestra rifa!</h1>
+                            {% if not assigned_numbers %}
+                                <div class="bg-yellow-100 text-yellow-800 p-4 rounded-lg mb-4">
+                                    <p class="text-lg">
+                                        Su pago está <strong>pendiente de confirmación</strong>. En cuanto verifiquemos su pago, le asignaremos sus números de boletos.
+                                    </p>
+                                    <p class="text-lg mt-4">
+                                        Asegúrese de guardar una copia de su comprobante de pago. Si su pago es confirmado, le notificaremos y asignaremos sus números.
+                                    </p>
+                                </div>
+                            {% else %}
+                                <div class="bg-green-100 text-green-800 p-4 rounded-lg mb-4">
+                                    <p class="text-lg">
+                                        ¡Su pago ha sido <strong>confirmado</strong>! Los números de sus boletos ya han sido asignados. ¡Gracias por su confianza y buena suerte!
+                                    </p>
+                                    <p class="text-lg mt-4">
+                                        Si es uno de los afortunados ganadores, será contactado directamente por nuestro equipo. ¡Le deseamos mucha suerte!
+                                    </p>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <!-- Detalles de la compra -->
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">Detalles de su Compra</h2>
+                        <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg mb-8">
+                            <!-- Números Asignados -->
+                            <h3 class="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300">Números Asignados</h3>
+                            <div class="{% if assigned_numbers %}bg-green-100 text-green-800{% else %}bg-yellow-100 text-yellow-800{% endif %} p-4 rounded-lg max-h-32 overflow-y-auto flex flex-wrap gap-2">
+                                {% if assigned_numbers %}
+                                    {% for number in assigned_numbers %}
+                                        <span class="inline-block bg-pink-100 text-pink-800 dark:bg-pink-800 dark:text-pink-200 font-semibold px-3 py-1 rounded-lg">
+                                            {{ number }}
+                                        </span>
+                                    {% endfor %}
+                                {% else %}
+                                    <p class="text-lg">
+                                        Actualmente no tiene números asignados ya que su pago está pendiente de confirmación. Una vez confirmado, sus números aparecerán aquí.
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <!-- Información del search_resulte -->
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">Datos del Participante</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center mb-6">
+                            <div class="border border-gray-200 dark:border-gray-600 p-4 rounded-lg shadow">
+                                <span class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Nombre Completo</span>
+                                <p class="text-lg text-gray-700 dark:text-gray-300">{{ search_result.full_name }}</p>
+                            </div>
+                            <div class="border border-gray-200 dark:border-gray-600 p-4 rounded-lg shadow">
+                                <span class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Cédula</span>
+                                <p class="text-lg text-gray-700 dark:text-gray-300">{{ search_result.identity_card }}</p>
+                            </div>
+                        </div>
+                        <!-- Información de la Compra -->
+                        <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">Detalles del Pago</h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center mb-6">
+                            <div class="border border-gray-200 dark:border-gray-600 p-4 rounded-lg shadow">
+                                <span class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Boletos Comprados</span>
+                                <p class="text-lg text-gray-700 dark:text-gray-300">{{ search_result.tickets_purchased }}</p>
+                            </div>
+                            <div class="border border-gray-200 dark:border-gray-600 p-4 rounded-lg shadow">
+                                <span class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Precio por Boleto</span>
+                                <p class="text-lg text-gray-700 dark:text-gray-300">
+                                    {{ search_result.raffle.ticket_cost }} {{ search_result.raffle.currency_type }}
+                                </p>
+                            </div>
+                            <div class="border border-gray-200 dark:border-gray-600 p-4 rounded-lg shadow">
+                                <span class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Total Pagado</span>
+                                <p class="text-lg text-gray-700 dark:text-gray-300">
+                                    {{ search_result.tickets_purchased|multiply:search_result.raffle.ticket_cost }} {{ search_result.raffle.currency_type }}
+                                </p>
+                            </div>
+                            <div class="border border-gray-200 dark:border-gray-600 p-4 rounded-lg shadow">
+                                <span class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Referencia de Pago</span>
+                                <p class="text-lg text-gray-700 dark:text-gray-300">{{ search_result.payment_reference }}</p>
+                            </div>
+                            <div class="md:col-span-2 border border-gray-200 dark:border-gray-600 p-4 rounded-lg shadow">
+                                <span class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Fecha del Sorteo</span>
+                                <p class="text-lg text-gray-700 dark:text-gray-300">{{ search_result.raffle.raffle_date }}</p>
+                            </div>
+                        </div>
+                        <!-- Mensaje adicional -->
+                        <div class="mt-8 text-center">
+                            <p class="text-gray-700 dark:text-gray-300">
+                                Por favor, <strong>guarde su comprobante de pago</strong> para cualquier consulta futura. Si su pago es confirmado, le notificaremos en breve.
+                            </p>
+                            <p class="mt-2 text-gray-600 dark:text-gray-400">
+                                Si es uno de los ganadores de la rifa, nuestro equipo se pondrá en contacto con usted. ¡Le deseamos mucha suerte y gracias por participar!
+                            </p>
+                            <p class="mt-2 text-gray-600 dark:text-gray-400">
+                                Si tiene alguna duda, no dude en contactarnos a través de nuestros canales oficiales.
+                            </p>
+                        </div>
+                    </div>
+                {% elif search_result == 'No existe' %}
+                    <div class="bg-red-100 text-red-800 p-4 rounded-lg mb-4">
+                        <h2 class="text-lg font-semibold">Pago no encontrado</h2>
+                        <p class="mt-2">
+                            No se ha encontrado ningún registro con la referencia ingresada. Verifique que el número de
+                            referencia sea correcto.
+                        </p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock content %}

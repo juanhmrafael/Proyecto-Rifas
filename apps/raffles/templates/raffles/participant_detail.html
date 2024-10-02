@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block content %}
+    <div class="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
+        <div class="max-w-5xl mx-auto mb-6">
+            <a href="{% url "raffles:list_participant" participant.raffle.pk %}"
+               class="text-white bg-gradient-to-r from-purple-500 to-pink-500 hover:bg-gradient-to-l focus:ring-4 focus:outline-none focus:ring-purple-200 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5">
+                Regresar
+            </a>
+        </div>
+        <div class="max-w-5xl mx-auto bg-white dark:bg-gray-800 shadow-lg rounded-lg p-6">
+            <!-- Título de la Sección -->
+            <h1 class="text-4xl font-bold mb-8 text-gray-900 dark:text-gray-200 text-center">Detalles del Participante</h1>
+            <!-- Sección: Captura del Pago y Números Asignados -->
+            <!-- Sección: Información del Pago -->
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">Información del Pago</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                <!-- Captura del Pago (si existe) -->
+                {% if participant.payment_receipt %}
+                    <div class="md:col-span-2">
+                        <label class="block mb-2 text-lg font-semibold text-gray-900 dark:text-gray-300">Captura del Pago</label>
+                        <img src="{{ participant.payment_receipt.url }}"
+                             alt="Captura del Pago"
+                             class="rounded-lg shadow-lg w-full h-auto object-cover">
+                    </div>
+                {% endif %}
+                <!-- Números Asignados -->
+                {% if participant and participant.assigned_numbers %}
+                    <div class="md:col-span-2">
+                        <h2 class="text-xl font-semibold mb-4 text-gray-700 dark:text-gray-300">Números Asignados</h2>
+                        <div class="bg-gray-100 dark:bg-gray-700 p-2 rounded-lg max-h-32 overflow-y-auto flex flex-wrap gap-2">
+                            {% for number in assigned_numbers %}
+                                <span class="inline-block bg-pink-100 text-pink-800 dark:bg-pink-800 dark:text-pink-200 font-semibold px-3 py-1 rounded-lg">
+                                    {{ number }}
+                                </span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 text-center">
+                <!-- Referencia del Pago -->
+                <div>
+                    <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Referencia del Pago</label>
+                    <p class="text-lg text-gray-700 dark:text-gray-300">{{ participant.payment_reference }}</p>
+                </div>
+                <!-- Fecha del Pago -->
+                <div>
+                    <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Fecha del Pago</label>
+                    <p class="text-lg text-gray-700 dark:text-gray-300">{{ participant.payment_date }}</p>
+                </div>
+                <!-- Número de Boletos Comprados -->
+                <div>
+                    <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Boletos Comprados</label>
+                    <p class="text-lg text-gray-700 dark:text-gray-300">{{ participant.tickets_purchased }}</p>
+                </div>
+                <!-- Estado del Pago -->
+                <div>
+                    <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Estado del Pago</label>
+                    <span class="inline-block px-3 py-1 rounded-full font-semibold
+                                 {% if participant.status == 'confirmed' %}
+                                     bg-green-100 text-green-800 dark:bg-green-800 dark:text-green-200
+                                 {% else %}
+                                     bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-200
+                                 {% endif %}">{{ participant.get_status_display }}</span>
+                </div>
+            </div>
+            <!-- Sección: Información de Contacto -->
+            <h2 class="text-2xl font-bold mb-6 text-gray-800 dark:text-gray-200">Datos de Contacto</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 text-center">
+                <!-- Nombre Completo -->
+                <div>
+                    <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Nombre Completo</label>
+                    <p class="text-lg text-gray-700 dark:text-gray-300">{{ participant.full_name }}</p>
+                </div>
+                <!-- Cédula de Identidad -->
+                <div>
+                    <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Cédula de Identidad</label>
+                    <p class="text-lg text-gray-700 dark:text-gray-300">{{ participant.identity_card }}</p>
+                </div>
+                <!-- Correo Electrónico -->
+                <div>
+                    <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Correo Electrónico</label>
+                    <p class="text-lg text-gray-700 dark:text-gray-300">{{ participant.email }}</p>
+                </div>
+                <!-- Número de Teléfono -->
+                <div>
+                    <label class="block mb-2 text-lg font-medium text-gray-900 dark:text-gray-300">Número de Teléfono</label>
+                    <p class="text-lg text-gray-700 dark:text-gray-300">{{ participant.phone_number }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

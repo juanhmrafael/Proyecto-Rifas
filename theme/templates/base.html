@@ -1,0 +1,38 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <meta name="description" content="">
+        <meta name="keywords" content="">
+        <title>
+            {% block title %}
+                Mi Proyecto
+            {% endblock title %}
+        </title>
+        {% tailwind_css %}
+        <!-- css adicionales de cada app -->
+        {% block css %}
+        {% endblock css %}
+    </head>
+    <body class="flex flex-col min-h-screen bg-white dark:bg-gray-900 text-gray-900 dark:text-white">
+        <header>
+            {% include "includes/header.html" %}
+        </header>
+        {% include "partials/messages.html" %}
+        <main class="flex-grow">
+            {% block content %}
+            {% endblock content %}
+        </main>
+        <footer>
+            {% include "includes/footer.html" %}
+        </footer>
+        <!-- Incluir el archivo JS compilado -->
+        <script src="{% static 'js/bundle.js' %}"></script>
+        <!-- Scripts adicionales de cada app -->
+        {% block js %}
+        {% endblock js %}
+    </body>
+</html>

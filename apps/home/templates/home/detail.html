@@ -1,0 +1,346 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<div id="controls-carousel" class="relative max-w-5xl w-full container mx-auto px-4" data-carousel="slide">
+    <!-- Carousel wrapper -->
+    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+        <!-- Item 1 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <img src="{% get_media_prefix %}img/Rifa 2/premio1.jpg"
+                class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                alt="Premio 1">
+        </div>
+        <!-- Item 2 -->
+        <div class="hidden duration-700 ease-in-out" data-carousel-item="active">
+            <img src="{% get_media_prefix %}img/Rifa 2/premio2.jpg"
+                class="absolute block w-full h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+                alt="Premio 2">
+        </div>
+        <!-- Agrega más items según sea necesario -->
+    </div>
+    <!-- Slider controls -->
+    <button type="button"
+        class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        data-carousel-prev>
+        <span
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="M5 1 1 5l4 4" />
+            </svg>
+            <span class="sr-only">Previous</span>
+        </span>
+    </button>
+    <button type="button"
+        class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+        data-carousel-next>
+        <span
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
+            <svg class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180" aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                    d="m1 9 4-4-4-4" />
+            </svg>
+            <span class="sr-only">Next</span>
+        </span>
+    </button>
+</div>
+<div class="mx-auto px-4 py-12">
+    <div class="max-w-2xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
+        <!-- Stepper de Progreso -->
+        <div class="flex justify-between mb-8">
+            <div class="flex items-center">
+                <div id="step1Indicator"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-pink-500 text-white">1</div>
+                <span class="ml-2 text-sm font-semibold text-pink-500">Datos de Contacto</span>
+            </div>
+            <div class="flex items-center">
+                <div id="step2Indicator"
+                    class="w-8 h-8 flex items-center justify-center rounded-full bg-gray-300 dark:bg-gray-600 text-white">
+                    2
+                </div>
+                <span class="ml-2 text-sm text-gray-500 dark:text-gray-400">Datos de Pago</span>
+            </div>
+        </div>
+        <!-- Primer Contenedor: Información de la Rifa -->
+        <div class="bg-pink-500 dark:bg-pink-600 text-white p-6 rounded-lg mb-6">
+            <div class="flex items-center mb-4">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z">
+                    </path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="ml-2 text-xl font-bold">Premios de la Rifa</span>
+            </div>
+            <h2 class="text-2xl font-bold mb-4">Toyota Corolla 2010 + 2 Motos 0KM</h2>
+            <p class="sm:flex mb-2 gap-2">
+                <span class="flex gap-2">
+                    <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path fill-rule="evenodd"
+                            d="M5 5a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1h1a1 1 0 0 0 1-1 1 1 0 1 1 2 0 1 1 0 0 0 1 1 2 2 0 0 1 2 2v1a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V7a2 2 0 0 1 2-2ZM3 19v-7a1 1 0 0 1 1-1h16a1 1 0 0 1 1 1v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Zm6.01-6a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm-10 4a1 1 0 1 1 2 0 1 1 0 0 1-2 0Zm6 0a1 1 0 1 0-2 0 1 1 0 0 0 2 0Zm2 0a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z"
+                            clip-rule="evenodd" />
+                    </svg>
+                    Fecha de Sorteo:</span>
+                <span class="font-semibold">2024-09-05</span>
+            </p>
+            <div class="mb-4 mt-4">
+                <ul class="text-left space-y-2">
+                    <p class="font-semibold flex items-center justify-center">
+                        <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                            height="24" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M11 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0Z" />
+                            <path fill-rule="evenodd"
+                                d="M9.896 3.051a2.681 2.681 0 0 1 4.208 0c.147.186.38.282.615.255a2.681 2.681 0 0 1 2.976 2.975.681.681 0 0 0 .254.615 2.681 2.681 0 0 1 0 4.208.682.682 0 0 0-.254.615 2.681 2.681 0 0 1-2.976 2.976.681.681 0 0 0-.615.254 2.682 2.682 0 0 1-4.208 0 .681.681 0 0 0-.614-.255 2.681 2.681 0 0 1-2.976-2.975.681.681 0 0 0-.255-.615 2.681 2.681 0 0 1 0-4.208.681.681 0 0 0 .255-.615 2.681 2.681 0 0 1 2.976-2.975.681.681 0 0 0 .614-.255ZM12 6a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+                                clip-rule="evenodd" />
+                            <path
+                                d="M5.395 15.055 4.07 19a1 1 0 0 0 1.264 1.267l1.95-.65 1.144 1.707A1 1 0 0 0 10.2 21.1l1.12-3.18a4.641 4.641 0 0 1-2.515-1.208 4.667 4.667 0 0 1-3.411-1.656Zm7.269 2.867 1.12 3.177a1 1 0 0 0 1.773.224l1.144-1.707 1.95.65A1 1 0 0 0 19.915 19l-1.32-3.93a4.667 4.667 0 0 1-3.4 1.642 4.643 4.643 0 0 1-2.53 1.21Z" />
+                        </svg>
+                        Premios:
+                    </p>
+                    {{ obj.prizes | safe }}
+                </ul>
+            </div>
+            <p class="mb-4">
+                <strong>Costo boleto:</strong> 600 BS
+            </p>
+            <p class="mb-4 font-semibold flex items-center gap-2">
+                <svg class="size-10 sm:size-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" fill="currentColor" viewBox="0 0 24 24">
+                    <path fill-rule="evenodd"
+                        d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm9.408-5.5a1 1 0 1 0 0 2h.01a1 1 0 1 0 0-2h-.01ZM10 10a1 1 0 1 0 0 2h1v3h-1a1 1 0 1 0 0 2h4a1 1 0 1 0 0-2h-1v-4a1 1 0 0 0-1-1h-2Z"
+                        clip-rule="evenodd" />
+                </svg>
+                ¡Participa a partir de 2 boletos en adelante!
+            </p>
+            <p>Cada boleto aumenta tus posibilidades de ganar grandes premios. ¡Participa ahora!</p>
+        </div>
+        <!-- Formulario 1: Datos de Contacto -->
+        <div id="form1" class="space-y-6">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Datos de Contacto</h2>
+            <form id="contactForm" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label for="name" class="block text-gray-700 dark:text-gray-400 mb-2">Nombre Completo</label>
+                        <input type="text" id="name" required
+                            class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500">
+                    </div>
+                    <div>
+                        <label for="identity_number" class="block text-gray-700 dark:text-gray-400 mb-2">Cédula de
+                            Identidad</label>
+                        <input type="text" id="identity_number" required
+                            class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500">
+                    </div>
+                    <div>
+                        <label for="email" class="block text-gray-700 dark:text-gray-400 mb-2">Correo
+                            Electrónico</label>
+                        <input type="email" id="email" required
+                            class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500">
+                    </div>
+                    <div>
+                        <label for="phone" class="block text-gray-700 dark:text-gray-400 mb-2">Número de
+                            Teléfono</label>
+                        <input type="tel" id="phone" required
+                            class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500">
+                    </div>
+                </div>
+                <!-- Botón Siguiente -->
+                <div class="mt-6 flex justify-center sm:justify-end">
+                    <button type="button"
+                        class="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-600"
+                        onclick="goToStep2()">Siguiente: Datos de Pago</button>
+                </div>
+            </form>
+        </div>
+        <!-- Formulario 2: Datos de Pago -->
+        <div id="form2" class="space-y-6 hidden">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4">Datos de Pago</h2>
+            <form id="paymentForm" class="space-y-4">
+                <!-- Datos de Pago Móvil -->
+                <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg">{{ obj.payment_info|safe }}</div>
+                <!-- Número de Boletos -->
+                <div>
+                    <label for="ticket_quantity" class="block text-gray-700 dark:text-gray-400 mb-2">Número de
+                        Boletos</label>
+                    <div class="flex items-center">
+                        <button type="button"
+                            class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-l-lg focus:outline-none"
+                            onclick="decreaseTickets()">-</button>
+                        <input type="number" id="ticket_quantity" name="ticket_quantity" value="1" min="1" readonly
+                            class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-center focus:outline-none">
+                        <button type="button"
+                            class="bg-gray-200 dark:bg-gray-600 text-gray-800 dark:text-gray-200 px-3 py-2 rounded-r-lg focus:outline-none"
+                            onclick="increaseTickets()">+</button>
+                    </div>
+                </div>
+                <!-- Referencia de Pago -->
+                <div>
+                    <label for="payment_reference" class="block text-gray-700 dark:text-gray-400 mb-2">Referencia de
+                        Pago</label>
+                    <input type="text" id="payment_reference" required
+                        class="w-full bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-pink-500 focus:ring-2 focus:ring-pink-500">
+                </div>
+                <!-- Fecha de Pago -->
+                <div>
+                    <label for="payment_date" class="block text-gray-700 dark:text-gray-400 mb-2">Fecha del Pago</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                                <path
+                                    d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
+                            </svg>
+                        </div>
+                        <input id="payment_date" datepicker datepicker-autohide datepicker-format="dd/mm/yyyy"
+                            datepicker-min-date="01/09/2024" datepicker-max-date="{% now " d/m/Y" %}" datepicker-buttons
+                            datepicker-language="es" datepicker-autoselect-today type="text"
+                            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-500 focus:border-pink-500 block w-full ps-10 p-2.5  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-pink-500 dark:focus:border-pink-500"
+                            placeholder="Seleccione una fecha" required>
+                    </div>
+                </div>
+                <!-- Captura de Pago -->
+                <div>
+                    <label for="payment_capture" class="block text-gray-700 dark:text-gray-400 mb-2">Sube tu Captura de
+                        Pago</label>
+                    <input type="file" id="payment_capture" accept="image/*" required
+                        class="block w-full text-sm text-gray-700 dark:text-gray-200 border border-gray-300 dark:border-gray-600 rounded-lg cursor-pointer bg-gray-50 dark:bg-gray-700 focus:outline-none">
+                    <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Formato aceptado: JPG, PNG. Tamaño máximo:
+                        5MB</p>
+                </div>
+                <!-- Checkbox Términos -->
+                <div class="mt-4">
+                    <input type="checkbox" id="terms"
+                        class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-pink-300 dark:bg-gray-600 dark:border-gray-500 dark:focus:ring-pink-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 mr-2"
+                        required>
+                    <label for="terms" class="text-gray-700 dark:text-gray-400">
+                        Acepto los <a href="#" class="text-pink-500" data-modal-target="termsModal"
+                            data-modal-toggle="termsModal">Términos y Condiciones</a>.
+                    </label>
+                </div>
+                <!-- Botón para Participar -->
+                <div class="mt-6 flex justify-between">
+                    <button type="button"
+                        class="px-6 py-3 bg-gray-500 text-white rounded-lg hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:focus:ring-gray-600"
+                        onclick="goToStep1()">Anterior</button>
+                    <button type="submit"
+                        class="px-6 py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-600">
+                        Participar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- Modal de Términos y Condiciones -->
+<div id="termsModal" tabindex="-1" aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-2xl max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="flex items-start justify-between p-4 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">Términos y Condiciones</h3>
+                <button type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-hide="termsModal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Cerrar</span>
+                </button>
+            </div>
+            <div class="p-6 space-y-6">
+                <p class="text-gray-500 dark:text-gray-400">
+                    1. Los números disponibles para comprar en cada una de nuestras rifas serán descritos en la página
+                    de detalles de las mismas.
+                </p>
+                <p class="text-gray-500 dark:text-gray-400">
+                    2. Solo pueden participar personas naturales mayores de 18 años con nacionalidad venezolana o
+                    extranjeros residentes en Venezuela.
+                </p>
+                <p class="text-gray-500 dark:text-gray-400">
+                    3. Los premios deben ser retirados personalmente en el lugar indicado en cada rifa. Se entregará
+                    personalmente solo en la dirección indicada por el ganador del primer premio o premio mayor.
+                </p>
+                <p class="text-gray-500 dark:text-gray-400">
+                    4. Los ganadores aceptan que se difundan en todas nuestras redes sociales fotografías y videos con
+                    su presencia luego de haber sido entregados los premios.
+                </p>
+            </div>
+            <div
+                class="flex items-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600 justify-end">
+                <button data-modal-hide="termsModal" type="button"
+                    class="text-white bg-pink-500 hover:bg-pink-600 focus:ring-4 focus:outline-none focus:ring-pink-300 dark:focus:ring-pink-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center">
+                    Aceptar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block js %}
+<script>
+    // Función para cambiar al segundo formulario
+    function goToStep2() {
+        const contactForm = document.getElementById('contactForm');
+        if (contactForm.checkValidity() || !contactForm.checkValidity()) {
+            document.getElementById('form1').classList.add('hidden');
+            document.getElementById('form2').classList.remove('hidden');
+            document.getElementById('step1Indicator').classList.remove('bg-pink-500');
+            document.getElementById('step1Indicator').classList.add('bg-gray-300', 'dark:bg-gray-600');
+            document.getElementById('step2Indicator').classList.remove('bg-gray-300', 'dark:bg-gray-600');
+            document.getElementById('step2Indicator').classList.add('bg-pink-500');
+
+            document.getElementById('step1Indicator').nextElementSibling.classList.remove('font-semibold', 'text-pink-500');
+            document.getElementById('step1Indicator').nextElementSibling.classList.add('text-gray-500', 'dark:text-gray-400');
+            document.getElementById('step2Indicator').nextElementSibling.classList.remove('text-gray-500', 'dark:text-gray-400');
+            document.getElementById('step2Indicator').nextElementSibling.classList.add('font-semibold', 'text-pink-500');
+
+
+
+        } else {
+            contactForm.reportValidity();
+        }
+    }
+
+    // Función para regresar al primer formulario
+    function goToStep1() {
+        document.getElementById('form1').classList.remove('hidden');
+        document.getElementById('form2').classList.add('hidden');
+        document.getElementById('step1Indicator').classList.add('bg-pink-500');
+        document.getElementById('step1Indicator').classList.remove('bg-gray-300', 'dark:bg-gray-600');
+        document.getElementById('step2Indicator').classList.add('bg-gray-300', 'dark:bg-gray-600');
+        document.getElementById('step2Indicator').classList.remove('bg-pink-500');
+        document.getElementById('step2Indicator').nextElementSibling.classList.remove('font-semibold', 'text-pink-500');
+        document.getElementById('step2Indicator').nextElementSibling.classList.add('text-gray-500', 'dark:text-gray-400');
+        document.getElementById('step1Indicator').nextElementSibling.classList.remove('text-gray-500', 'dark:text-gray-400');
+        document.getElementById('step1Indicator').nextElementSibling.classList.add('font-semibold', 'text-pink-500');
+    }
+
+    // Variables y funciones para controlar los boletos
+    let ticketQuantity = 1;
+    const ticketPrice = 600; // Precio por boleto en Bs
+
+    function updateTotal() {
+        const total = ticketQuantity * ticketPrice;
+        document.getElementById('montoTotal').textContent = `${ total } Bs`;
+    }
+
+    function increaseTickets() {
+        ticketQuantity++;
+        document.getElementById('ticket_quantity').value = ticketQuantity;
+        updateTotal();
+    }
+
+    function decreaseTickets() {
+        if (ticketQuantity > 1) {
+            ticketQuantity--;
+            document.getElementById('ticket_quantity').value = ticketQuantity;
+            updateTotal();
+        }
+    }
+</script>
+{% endblock js %}
